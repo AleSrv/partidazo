@@ -10,16 +10,20 @@ const SidebarComponents = () => {
         <p className="text-center text-gray-500">Cargando jugadores...</p>
       ) : (
         <ul className="space-y-2">
-          {players.map((player, index) => (
-            <li key={index} className="flex items-center gap-2">
-              <img
-                src={player.imagen}
-                alt={`Avatar de ${player.nombre}`}
-                className="w-8 h-8 rounded-full border-2 border-gray-300"
-              />
-              <span>{player.nombre} - Puntuación: {player.puntaje}</span>
-            </li>
-          ))}
+          {players.length === 0 ? (
+            <p className="text-center text-gray-500">Falta cargar jugadores...</p>
+          ) : (
+            players.map((player, index) => (
+              <li key={index} className="flex items-center gap-2">
+                <img
+                  src={player.imagen}
+                  alt={`Avatar de ${player.nombre}`}
+                  className="w-8 h-8 rounded-full border-2 border-gray-300"
+                />
+                <span>{player.nombre} - {player.puntaje} pts.</span>
+              </li>
+            ))
+          )}
         </ul>
       )}
     </nav>

@@ -53,9 +53,9 @@ const MainComponents = () => {
           className="w-12 text-center rounded border border-gray-300"
           required
         >
-          {[...Array(10)].map((_, i) => (
-            <option key={i} value={i + 1}>
-              {i + 1}
+          {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
+            <option key={value} value={value}>
+              {value}
             </option>
           ))}
         </select>
@@ -74,9 +74,8 @@ const MainComponents = () => {
         </div>
         <input
           type="submit"
-          className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${
-            !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${!isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           value="Agregar"
           disabled={!isImageLoaded}
         />
