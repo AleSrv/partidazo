@@ -1,16 +1,25 @@
-import Layout from "./Layout";
+import { useState } from "react";
 import HeaderComponents from "./components/HeaderComponents";
 import SidebarComponents from "./components/SidebarComponents";
+import { PlayerProvider } from "./Provider/PlayerProvider";
+import Layout from "./Layout";
 import MainComponents from "./components/MainComponents";
 import FooterComponents from "./components/FooterComponents";
-import { PlayerProvider } from "./Provider/PlayerProvider";
+
+
 
 const App: React.FC = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
+
   return (
     <PlayerProvider>
       <Layout
-        header={<HeaderComponents />}
-        aside={<SidebarComponents />}
+        header={<HeaderComponents toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />}
+        aside={<SidebarComponents isOpen={isSidebarOpen} />}
         main={<MainComponents />}
         footer={<FooterComponents />}
       />

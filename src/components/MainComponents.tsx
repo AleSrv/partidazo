@@ -34,57 +34,57 @@ const MainComponents = () => {
 
   return (
     <div>
-      <form
-        onSubmit={handleSubmit}
-        className="form flex flex-row gap-4 bg-fuchsia-300 text-black p-4 rounded-lg items-center"
+    <form
+      onSubmit={handleSubmit}
+      className="form flex flex-col md:flex-row gap-4 bg-fuchsia-300 text-black p-4 rounded-lg items-center"
+    >
+      <label htmlFor="nombre" className="uppercase text-left">JUGADOR:</label>
+      <input
+        type="text"
+        id="nombre"
+        name="nombre"
+        value={nombre}
+        onChange={(e) => setNombre(e.target.value)}
+        className="w-full md:w-1/4 min-w-60 text-center rounded border border-gray-300"
+      />
+      <label htmlFor="puntuacion" className="uppercase text-left">PUNTUACIÓN:</label>
+      <select
+        id="puntuacion"
+        name="puntuacion"
+        value={puntaje}
+        onChange={(e) => setPuntaje(Number(e.target.value))}
+        className="w-full md:w-12 text-center rounded border border-gray-300"
+        required
       >
-        <label htmlFor="nombre" className="uppercase text-left">JUGADOR:</label>
-        <input
-          type="text"
-          id="nombre"
-          name="nombre"
-          value={nombre}
-          onChange={(e) => setNombre(e.target.value)}
-          className="w-1/4 min-w-60 text-center rounded border border-gray-300"
+        {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
+          <option key={value} value={value}>
+            {value}
+          </option>
+        ))}
+      </select>
+      <div
+        className="flex items-center gap-2 border-black border-2 rounded p-2 cursor-pointer"
+        onClick={handleImageRefresh}
+      >
+        <img
+          src={imagen}
+          alt="Imagen aleatoria de robot"
+          className="w-8 h-8 rounded"
+          onLoad={() => setIsImageLoaded(true)}
+          onError={() => setIsImageLoaded(false)}
         />
-        <label htmlFor="puntuacion" className="uppercase text-left">PUNTUACIÓN:</label>
-        <select
-          id="puntuacion"
-          name="puntuacion"
-          value={puntaje}
-          onChange={(e) => setPuntaje(Number(e.target.value))}
-          className="w-12 text-center rounded border border-gray-300"
-          required
-        >
-          {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </select>
-        <div
-          className="flex items-center gap-2 border-black border-2 rounded p-2 cursor-pointer"
-          onClick={handleImageRefresh}
-        >
-          <img
-            src={imagen}
-            alt="Imagen aleatoria de robot"
-            className="w-8 h-8 rounded"
-            onLoad={() => setIsImageLoaded(true)} // Marca la imagen como cargada
-            onError={() => setIsImageLoaded(false)} // Maneja errores de carga
-          />
-          <span className="w-8 h-8">🔄</span>
-        </div>
-        <input
-          type="submit"
-          className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${
-            !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          value="Agregar"
-          disabled={!isImageLoaded} // Deshabilita el botón si la imagen no está cargada
-        />
-      </form>
-    </div>
+        <span className="w-8 h-8">🔄</span>
+      </div>
+      <input
+        type="submit"
+        className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${
+          !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
+        }`}
+        value="Agregar"
+        disabled={!isImageLoaded}
+      />
+    </form>
+  </div>
   );
 };
 
