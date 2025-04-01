@@ -1,20 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { usePlayerContext } from "../Hooks/usePlayerContext";
 
 const MainComponents = () => {
   const { addPlayer } = usePlayerContext();
   const [nombre, setNombre] = useState("");
   const [puntaje, setPuntaje] = useState(1);
-  const [imagen, setImagen] = useState(() => {
-    const randomSeed = Math.random().toString(36).substring(7);
-    return `https://robohash.org/${randomSeed}?set=set1`;
-  });
+  const [imagen, setImagen] = useState("");
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  // Generar una imagen aleatoria al cargar el componente
+  useEffect(() => {
+    const randomSeed = Math.random().toString(36).substring(7);
+    setImagen(`https://robohash.org/${randomSeed}?set=set1`);
+  }, []);
 
   const handleImageRefresh = () => {
     const randomSeed = Math.random().toString(36).substring(7);
     setImagen(`https://robohash.org/${randomSeed}?set=set1`);
-    setIsImageLoaded(false);
+    setIsImageLoaded(false); // Marca la imagen como no cargada
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,17 +70,18 @@ const MainComponents = () => {
             src={imagen}
             alt="Imagen aleatoria de robot"
             className="w-8 h-8 rounded"
-            onLoad={() => setIsImageLoaded(true)}
-            onError={() => setIsImageLoaded(false)}
+            onLoad={() => setIsImageLoaded(true)} // Marca la imagen como cargada
+            onError={() => setIsImageLoaded(false)} // Maneja errores de carga
           />
           <span className="w-8 h-8">🔄</span>
         </div>
         <input
           type="submit"
-          className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${!isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+          className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${
+            !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
+          }`}
           value="Agregar"
-          disabled={!isImageLoaded}
+          disabled={!isImageLoaded} // Deshabilita el botón si la imagen no está cargada
         />
       </form>
     </div>
