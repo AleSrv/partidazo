@@ -61,13 +61,13 @@ const MainComponents = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <form
         onSubmit={handleSubmit}
-        className="form flex flex-wrap md:flex-row gap-4 bg-fuchsia-300 text-black p-4 rounded-lg items-center justify-between"
+        className="form flex flex-col gap-4 bg-fuchsia-300 text-black p-6 rounded-lg shadow-lg max-w-lg w-full"
       >
         {/* Campo de nombre */}
-        <div className="flex flex-col w-full md:w-1/4">
+        <div className="flex flex-col">
           <label htmlFor="nombre" className="uppercase text-left mb-2">JUGADOR:</label>
           <input
             type="text"
@@ -80,7 +80,7 @@ const MainComponents = () => {
         </div>
 
         {/* Campo de puntuación */}
-        <div className="flex flex-col w-full md:w-1/4">
+        <div className="flex flex-col">
           <label htmlFor="puntuacion" className="uppercase text-left mb-2">PUNTUACIÓN:</label>
           <select
             id="puntuacion"
@@ -114,10 +114,10 @@ const MainComponents = () => {
         </div>
 
         {/* Botón de envío */}
-        <div className="w-full md:w-auto">
+        <div>
           <input
             type="submit"
-            className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded ${
+            className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded w-full ${
               !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
             }`}
             value="Agregar"
