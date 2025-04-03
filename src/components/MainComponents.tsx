@@ -79,7 +79,6 @@ const MainComponents = () => {
           />
         </div>
 
-        {/* Cuadrados para seleccionar el puntaje */}
  {/* Cuadrados para seleccionar el puntaje */}
 <div className="flex flex-wrap gap-2 mt-4">
   {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
@@ -88,8 +87,8 @@ const MainComponents = () => {
       onClick={() => setPuntaje(value)}
       className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${
         puntaje === value
-          ? "bg-blue-500 text-white"
-          : "bg-white text-black hover:bg-gray-200 hover:text-black"
+          ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
+          : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
       }`}
     >
       {value}
