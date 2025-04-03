@@ -6,7 +6,7 @@ const HeaderComponents: React.FC<{ toggleSidebar: () => void; isSidebarOpen: boo
           className="bg-blue-500 text-white px-4 py-2 rounded"
           onClick={toggleSidebar}
         >
-          {isSidebarOpen ? "Cerrar Listado" : "Abrir Listado"}
+          {isSidebarOpen ? "Cerrar Listado" : "Convocar Jugadores"}
         </button>
       </div>
     );

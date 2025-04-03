@@ -5,6 +5,7 @@ import { PlayerProvider } from "./Provider/PlayerProvider";
 import Layout from "./Layout";
 import MainComponents from "./components/MainComponents";
 import FooterComponents from "./components/FooterComponents";
+import Convocados from "./components/Convocados";
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -37,10 +38,11 @@ const App: React.FC = () => {
         <Layout
           header={<HeaderComponents toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />}
           aside={
-            <SidebarComponents
-              isOpen={isSidebarOpen}
-              closeSidebar={closeSidebar}
-            />
+            isSidebarOpen ? (
+              <SidebarComponents isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+            ) : (
+              <Convocados />
+            )
           }
           main={<MainComponents />}
           footer={<FooterComponents />}

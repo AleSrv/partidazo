@@ -21,7 +21,9 @@ const SidebarComponents: React.FC<{ isOpen: boolean; closeSidebar: () => void }>
       ) : (
         <ul className="space-y-2">
           {players.length === 0 ? (
-            <p className="text-center text-gray-500">No hay jugadores disponibles.</p>
+            <li>
+              <p className="text-center text-gray-500">No hay jugadores disponibles.</p>
+            </li>
           ) : (
             players.map((player, index) => (
               <li key={index} className="flex items-center gap-2">

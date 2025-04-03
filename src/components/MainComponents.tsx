@@ -79,22 +79,21 @@ const MainComponents = () => {
           />
         </div>
 
- {/* Cuadrados para seleccionar el puntaje */}
-<div className="flex flex-wrap gap-2 mt-4">
-  {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
-    <div
-      key={value}
-      onClick={() => setPuntaje(value)}
-      className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${
-        puntaje === value
-          ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
-          : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
-      }`}
-    >
-      {value}
-    </div>
-  ))}
-</div>
+        {/* Cuadrados para seleccionar el puntaje */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
+            <div
+              key={value}
+              onClick={() => setPuntaje(value)}
+              className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${puntaje === value
+                  ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
+                  : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
+                }`}
+            >
+              {value}
+            </div>
+          ))}
+        </div>
 
         {/* Imagen y botón de refrescar */}
         <div
@@ -109,9 +108,8 @@ const MainComponents = () => {
             onError={() => setIsImageLoaded(false)}
           />
           <div
-            className={`flex items-center gap-2 p-2 rounded border ${
-              isImageLoaded ? "bg-green-500 text-white" : "bg-red-500 text-white"
-            }`}
+            className={`flex items-center gap-2 p-2 rounded border ${isImageLoaded ? "bg-green-500 text-white" : "bg-red-500 text-white"
+              }`}
           >
             <span className="w-8 h-8">🔄</span>
             <p>CAMBIAR IMAGEN</p>
@@ -122,9 +120,8 @@ const MainComponents = () => {
         <div className="mt-4">
           <input
             type="submit"
-            className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded w-full ${
-              !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded w-full ${!isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             value="Agregar"
             disabled={!isImageLoaded}
           />
