@@ -1,14 +1,20 @@
 import { usePlayerContext } from "../Hooks/usePlayerContext";
 
-const SidebarComponents: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
+const SidebarComponents: React.FC<{ isOpen: boolean; closeSidebar: () => void }> = ({ isOpen, closeSidebar }) => {
   const { players, loading } = usePlayerContext();
 
   return (
-    <nav
+    <div
       className={`fixed top-0 left-0 h-full w-64 bg-lime-800 text-white p-4 border-r-4 border-white transform ${
         isOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-300 md:relative md:translate-x-0 md:w-64`}
+      } transition-transform duration-300 z-20`}
     >
+      <button
+        className="text-white bg-red-500 px-4 py-2 rounded mb-4"
+        onClick={closeSidebar}
+      >
+        Cerrar
+      </button>
       <h2 className="text-lg font-bold mb-4">Lista de Jugadores</h2>
       {loading ? (
         <p className="text-center text-gray-500">Cargando jugadores...</p>
@@ -30,7 +36,7 @@ const SidebarComponents: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
           )}
         </ul>
       )}
-    </nav>
+    </div>
   );
 };
 

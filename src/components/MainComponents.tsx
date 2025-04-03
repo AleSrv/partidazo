@@ -61,10 +61,10 @@ const MainComponents = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center w-full h-full  bg-lime-800 text-white ">
       <form
         onSubmit={handleSubmit}
-        className="form flex flex-col gap-4 bg-fuchsia-300 text-black p-6 rounded-lg shadow-lg max-w-lg w-full"
+        className="flex flex-col gap-4 bg-fuchsia-300 text-black p-6 rounded-lg shadow-lg max-w-lg w-full"
       >
         {/* Campo de nombre */}
         <div className="flex flex-col">
@@ -79,28 +79,27 @@ const MainComponents = () => {
           />
         </div>
 
-        {/* Campo de puntuación */}
-        <div className="flex flex-col">
-          <label htmlFor="puntuacion" className="uppercase text-left mb-2">PUNTUACIÓN:</label>
-          <select
-            id="puntuacion"
-            name="puntuacion"
-            value={puntaje}
-            onChange={(e) => setPuntaje(Number(e.target.value))}
-            className="w-full text-center rounded border border-gray-300 p-2"
-            required
-          >
-            {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
-              <option key={value} value={value}>
-                {value}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* Cuadrados para seleccionar el puntaje */}
+ {/* Cuadrados para seleccionar el puntaje */}
+<div className="flex flex-wrap gap-2 mt-4">
+  {Array.from({ length: 19 }, (_, i) => 1 + i * 0.5).map((value) => (
+    <div
+      key={value}
+      onClick={() => setPuntaje(value)}
+      className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${
+        puntaje === value
+          ? "bg-blue-500 text-white"
+          : "bg-white text-black hover:bg-gray-200 hover:text-black"
+      }`}
+    >
+      {value}
+    </div>
+  ))}
+</div>
 
         {/* Imagen y botón de refrescar */}
         <div
-          className="flex items-center gap-2 border-black border-2 rounded p-2 cursor-pointer"
+          className="flex items-center justify-center mt-4 cursor-pointer border-2 border-gray-300 rounded p-2 hover:bg-gray-200"
           onClick={handleImageRefresh}
         >
           <img
@@ -110,11 +109,18 @@ const MainComponents = () => {
             onLoad={() => setIsImageLoaded(true)}
             onError={() => setIsImageLoaded(false)}
           />
-          <span className="w-8 h-8">🔄</span>
+          <div
+            className={`flex items-center gap-2 p-2 rounded border ${
+              isImageLoaded ? "bg-green-500 text-white" : "bg-red-500 text-white"
+            }`}
+          >
+            <span className="w-8 h-8">🔄</span>
+            <p>CAMBIAR IMAGEN</p>
+          </div>
         </div>
 
         {/* Botón de envío */}
-        <div>
+        <div className="mt-4">
           <input
             type="submit"
             className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded w-full ${
