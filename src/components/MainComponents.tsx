@@ -86,8 +86,8 @@ const MainComponents = () => {
               key={value}
               onClick={() => setPuntaje(value)}
               className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${puntaje === value
-                  ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
-                  : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
+                ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
+                : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
                 }`}
             >
               {value}
@@ -96,8 +96,9 @@ const MainComponents = () => {
         </div>
 
         {/* Imagen y botón de refrescar */}
-        <div
-          className="flex items-center justify-center mt-4 cursor-pointer border-2 border-gray-300 rounded p-2 hover:bg-gray-200"
+        <button
+          type="button"
+          className="flex items-center justify-center mt-4 cursor-pointer border-4 border-gray-300 rounded p-2 hover:bg-gray-200"
           onClick={handleImageRefresh}
         >
           <img
@@ -107,21 +108,21 @@ const MainComponents = () => {
             onLoad={() => setIsImageLoaded(true)}
             onError={() => setIsImageLoaded(false)}
           />
-          <div
-            className={`flex items-center gap-2 p-2 rounded border ${isImageLoaded ? "bg-green-500 text-white" : "bg-red-500 text-white"
-              }`}
-          >
-            <span className="w-8 h-8">🔄</span>
-            <p>CAMBIAR IMAGEN</p>
-          </div>
-        </div>
+            <p>REFRESCAR  <span className="w-8 h-8 rounded">🔄</span> </p>
+          {/* </div> */}
+        </button>
 
         {/* Botón de envío */}
         <div className="mt-4">
           <input
             type="submit"
-            className={`bg-fuchsia-500 hover:bg-fuchsia-600 text-black py-2 px-4 rounded w-full ${!isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
-              }`}
+            className=
+            {` uppercase font-bold
+              bg-blue-500 hover:bg-blue-800 text-white py-2 px-4 rounded w-full ${!isImageLoaded
+              ? "opacity-50 cursor-not-allowed"
+              : ""
+              }`
+            }
             value="Agregar"
             disabled={!isImageLoaded}
           />
