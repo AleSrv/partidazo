@@ -1,7 +1,7 @@
 import { usePlayerContext } from "../Hooks/usePlayerContext";
 
 const SidebarComponents: React.FC<{ isOpen: boolean; closeSidebar: () => void }> = ({ isOpen, closeSidebar }) => {
-  const { players, loading } = usePlayerContext();
+  const { players, loading, selectedPlayers, togglePlayerSelection } = usePlayerContext();
 
   return (
     <div
@@ -25,8 +25,16 @@ const SidebarComponents: React.FC<{ isOpen: boolean; closeSidebar: () => void }>
               <p className="text-center text-gray-500">No hay jugadores disponibles.</p>
             </li>
           ) : (
-            players.map((player, index) => (
-              <li key={index} className="flex items-center gap-2">
+            players.map((player) => (
+              <li
+                key={player.id}
+                onClick={() => togglePlayerSelection(player)}
+                className={`flex items-center gap-2 p-2 rounded cursor-pointer ${
+                  selectedPlayers.some((p) => p.id === player.id)
+                    ? "bg-blue-500 text-white"
+                    : "bg-white text-black"
+                }`}
+              >
                 <img
                   src={player.imagen}
                   alt={`Avatar de ${player.nombre}`}

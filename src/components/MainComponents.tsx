@@ -1,12 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { usePlayerContext } from "../Hooks/usePlayerContext";
 
 const MainComponents = () => {
   const { addPlayer } = usePlayerContext();
-  const [nombre, setNombre] = useState("");
-  const [puntaje, setPuntaje] = useState(1);
-  const [imagen, setImagen] = useState("");
-  const [isImageLoaded, setIsImageLoaded] = useState(false);
 
   // Función para generar una imagen aleatoria
   const generateRandomImage = () => {
@@ -14,35 +10,28 @@ const MainComponents = () => {
     return `https://robohash.org/${randomSeed}?set=set1`;
   };
 
-  // Precargar la imagen inicial al montar el componente
-  useEffect(() => {
-    const imageUrl = generateRandomImage();
-    const newImage = new Image();
-
-    newImage.src = imageUrl;
-    newImage.onload = () => {
-      setImagen(imageUrl);
-      setIsImageLoaded(true); // Marca la imagen como cargada
-    };
-    newImage.onerror = () => {
-      console.error("Error al cargar la imagen inicial.");
-      setIsImageLoaded(false);
-    };
-  }, []);
+  // Estados
+  const [nombre, setNombre] = useState("");
+  const [puntaje, setPuntaje] = useState(1);
+  const [imagen, setImagen] = useState(generateRandomImage()); 
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+  const [error, setError] = useState(false); 
 
   // Manejar el refresco de la imagen
   const handleImageRefresh = () => {
     const imageUrl = generateRandomImage();
     const newImage = new Image();
 
-    setIsImageLoaded(false); // Marca la imagen como no cargada
+    setIsImageLoaded(false); 
+    setError(false); 
     newImage.src = imageUrl;
     newImage.onload = () => {
       setImagen(imageUrl);
-      setIsImageLoaded(true); // Marca la imagen como cargada
+      setIsImageLoaded(true);
     };
     newImage.onerror = () => {
-      console.error("Error al cargar la nueva imagen.");
+      console.error("Error al cargar la imagen.");
+      setError(true); 
       setIsImageLoaded(false);
     };
   };
@@ -61,10 +50,10 @@ const MainComponents = () => {
   };
 
   return (
-    <div className="flex items-center justify-center w-full h-full  bg-lime-800 text-white ">
+    <div className="flex items-center justify-center w-full h-full bg-lime-800 text-white">
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 bg-fuchsia-300 text-black p-6 rounded-lg shadow-lg max-w-lg w-full"
+        className="flex flex-col gap-4 bg-fuchsia-300 text-black p-6  shadow-lg max-w-lg w-full"
       >
         {/* Campo de nombre */}
         <div className="flex flex-col">
@@ -85,10 +74,11 @@ const MainComponents = () => {
             <div
               key={value}
               onClick={() => setPuntaje(value)}
-              className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${puntaje === value
-                ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
-                : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
-                }`}
+              className={`cursor-pointer w-12 h-12 flex items-center justify-center rounded border transition-colors ${
+                puntaje === value
+                  ? "bg-blue-500 text-white hover:bg-blue-600 font-bold"
+                  : "bg-white text-black hover:bg-gray-200 hover:text-black font-semibold"
+              }`}
             >
               {value}
             </div>
@@ -96,33 +86,33 @@ const MainComponents = () => {
         </div>
 
         {/* Imagen y botón de refrescar */}
-        <button
-          type="button"
-          className="flex items-center justify-center mt-4 cursor-pointer border-4 border-gray-300 rounded p-2 hover:bg-gray-200"
-          onClick={handleImageRefresh}
-        >
-          <img
-            src={imagen}
-            alt="Imagen aleatoria de robot"
-            className="w-16 h-16 rounded"
-            onLoad={() => setIsImageLoaded(true)}
-            onError={() => setIsImageLoaded(false)}
-          />
-            <p>REFRESCAR  <span className="w-8 h-8 rounded">🔄</span> </p>
-          {/* </div> */}
-        </button>
+        <div className="flex flex-col items-center mt-4">
+          {error && (
+            <p className="text-red-500 mb-2">Error al cargar la imagen. Intenta nuevamente.</p>
+          )}
+          <button
+            type="button"
+            className="flex items-center justify-center cursor-pointer border-4 border-gray-300 rounded p-2 hover:bg-gray-200"
+            onClick={handleImageRefresh}
+          >
+            <img
+              src={imagen}
+              alt="Imagen aleatoria de robot"
+              className="w-16 h-16 rounded"
+              onLoad={() => setIsImageLoaded(true)}
+              onError={() => setIsImageLoaded(false)}
+            />
+            <p>REFRESCAR <span className="w-8 h-8 rounded">🔄</span></p>
+          </button>
+        </div>
 
         {/* Botón de envío */}
         <div className="mt-4">
           <input
             type="submit"
-            className=
-            {` uppercase font-bold
-              bg-blue-500 hover:bg-blue-800 text-white py-2 px-4 rounded w-full ${!isImageLoaded
-              ? "opacity-50 cursor-not-allowed"
-              : ""
-              }`
-            }
+            className={`uppercase font-bold bg-blue-500 hover:bg-blue-800 text-white py-2 px-4 rounded w-full ${
+              !isImageLoaded ? "opacity-50 cursor-not-allowed" : ""
+            }`}
             value="Agregar"
             disabled={!isImageLoaded}
           />
@@ -132,4 +122,4 @@ const MainComponents = () => {
   );
 };
 
-export default MainComponents;
+export default MainComponents;  

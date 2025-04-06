@@ -1,11 +1,12 @@
-// filepath: c:\Users\corre\inicioReact\Partidazos\src\context\PlayerContext.tsx
-import { createContext } from "react";
 import { Jugador } from "../types/Player";
+import React from "react";
 
-interface PlayerContextProps {
+export interface PlayerContextProps {
   players: Jugador[];
   addPlayer: (jugador: Jugador) => Promise<void>;
   loading: boolean;
+  selectedPlayers: Jugador[]; // Agregar esta propiedad
+  togglePlayerSelection: (player: Jugador) => Promise<void>; // Agregar esta propiedad
 }
 
-export const PlayerContext = createContext<PlayerContextProps | undefined>(undefined);
+export const PlayerContext = React.createContext<PlayerContextProps | undefined>(undefined);
