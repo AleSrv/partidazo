@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
-import HeaderComponents from "./components/HeaderComponents";
-import SidebarComponents from "./components/SidebarComponents";
 import { PlayerProvider } from "./Provider/PlayerProvider";
 import Layout from "./Layout";
+import HeaderComponents from "./components/HeaderComponents";
+import SidebarComponents from "./components/SidebarComponents";
 import MainComponents from "./components/MainComponents";
 import FooterComponents from "./components/FooterComponents";
 import Convocados from "./components/Convocados";
 
 const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false); // Estado para el formulario
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
+  };
+
+  const toggleForm = () => {
+    setIsFormOpen((prev) => !prev); // Alternar visibilidad del formulario
   };
 
   const closeSidebar = () => {
@@ -36,7 +41,17 @@ const App: React.FC = () => {
     <PlayerProvider>
       <div className="relative">
         <Layout
-          header={<HeaderComponents toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />}
+          header={
+            <div className="flex justify-between items-center">
+              <HeaderComponents toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
+              <button
+                className="bg-green-500 text-white px-4 py-2 rounded"
+                onClick={toggleForm}
+              >
+                {isFormOpen ? "Cerrar Formulario" : "Agregar Jugador"}
+              </button>
+            </div>
+          }
           aside={
             isSidebarOpen ? (
               <SidebarComponents isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
@@ -44,7 +59,7 @@ const App: React.FC = () => {
               <Convocados />
             )
           }
-          main={<MainComponents />}
+          main={isFormOpen ? <MainComponents /> : null} // Mostrar el formulario solo si está abierto
           footer={<FooterComponents />}
         />
         {/* Overlay para cerrar el sidebar al hacer clic fuera */}

@@ -25,25 +25,40 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     }
   };
 
-  // Llamar a fetchPlayers al montar el componente
+  // Función para cargar jugadores seleccionados desde Supabase
+  const fetchSelectedPlayers = async () => {
+    try {
+      const { data, error } = await supabase.from("convocados").select("*");
+      if (error) {
+        console.error("Error al cargar jugadores seleccionados desde Supabase:", error.message);
+      } else if (data) {
+        setSelectedPlayers(data); // Actualiza el estado con los jugadores seleccionados
+      }
+    } catch (err) {
+      console.error("Error inesperado al cargar jugadores seleccionados:", err);
+    }
+  };
+
+  // Llamar a fetchPlayers y fetchSelectedPlayers al montar el componente
   useEffect(() => {
     fetchPlayers();
+    fetchSelectedPlayers();
   }, []);
 
-  // Función para agregar un jugador
-  const addPlayer = async (jugador: Jugador) => {
+  // Función para agregar un jugador a la tabla "players" en Supabase
+  const addPlayer = async (jugador: Jugador): Promise<void> => {
     setLoading(true);
     try {
       const { data, error } = await supabase.from("players").insert(jugador).select();
       if (error) {
-        console.error("Error al guardar el jugador en Supabase:", error.message);
+        console.error("Error al agregar jugador a Supabase:", error.message);
         return;
       }
       if (data) {
         setPlayers((prevPlayers) => [...prevPlayers, ...data]); // Actualiza el estado local
       }
     } catch (err) {
-      console.error("Error inesperado al guardar el jugador:", err);
+      console.error("Error inesperado al agregar jugador:", err);
     } finally {
       setLoading(false);
     }
@@ -63,21 +78,18 @@ export const PlayerProvider: React.FC<{ children: ReactNode }> = ({ children }) 
       // Seleccionar jugador
       setSelectedPlayers((prev) => [...prev, player]);
       try {
-        // Asegúrate de enviar los datos en el formato correcto
-        const { error } = await supabase.from("convocados").insert({
-          id: player.id, // UUID del jugador
-          nombre: player.nombre, // Nombre del jugador
-          puntaje: player.puntaje, // Puntaje del jugador
-          imagen: player.imagen, // URL de la imagen del jugador
-        });
-        if (error) {
-          console.error("Error al agregar jugador a convocados:", error.message);
-        }
+        await supabase.from("convocados").insert({
+          id: player.id,
+          nombre: player.nombre,
+          puntaje: player.puntaje,
+          imagen: player.imagen,
+        }); // Agregar a Supabase
       } catch (error) {
-        console.error("Error inesperado al agregar jugador a convocados:", error);
+        console.error("Error al agregar jugador a convocados:", error);
       }
     }
   };
+
   return (
     <PlayerContext.Provider value={{ players, addPlayer, loading, selectedPlayers, togglePlayerSelection }}>
       {children}
