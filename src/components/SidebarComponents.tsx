@@ -19,16 +19,17 @@ const SidebarComponents: React.FC<{ isOpen: boolean; closeSidebar: () => void }>
 
     if (yaSeleccionado) {
       setSeleccionados((prev) => prev.filter((id) => id !== jugadorId));
-      quitarConvocado(jugadorId); 
+      quitarConvocado(jugadorId);
     } else {
       setSeleccionados((prev) => [...prev, jugadorId]);
       agregarConvocados([
         {
+          id_jugador: jugador.id!, // Aseguramos que se pase el id del jugador
           nombre: jugador.nombre,
           puntaje: jugador.puntaje,
           imagen: jugador.imagen,
           esPortero: jugador.esPortero,
-        },
+        }
       ]);
     }
   };

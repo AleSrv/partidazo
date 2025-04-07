@@ -1,5 +1,5 @@
 export interface Jugador {
-  id?: string;
+  id?: string;  //id opcional para evitar errores de undefined (primary key)
   nombre: string;
   puntaje: number;
   imagen: string;
@@ -8,6 +8,7 @@ export interface Jugador {
 
 export interface Convocado {
   id: string;
+  id_jugador: string; // referencia al jugador original (foreign key)
   nombre: string;
   puntaje: number;
   imagen: string;

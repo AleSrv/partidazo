@@ -18,9 +18,11 @@ export const ConvocadosProvider = ({ children }: { children: React.ReactNode }) 
   }, []);
 
   // ✅ Nueva función local: quitar un jugador del array (no toca Supabase)
-  const quitarConvocado = (jugadorId: string) => {
-    setConvocados((prev) => prev.filter((jugador) => jugador.id !== jugadorId));
+  const quitarConvocado = async (idJugador: string) => {
+    await supabase.from("convocados").delete().eq("id_jugador", idJugador);
+    setConvocados((prev) => prev.filter((j) => j.id_jugador !== idJugador));
   };
+
 
   // Funcion para eliminar un convocado de la base de datos y del estado local
   const eliminarConvocado = async (id: string) => {
@@ -31,25 +33,71 @@ export const ConvocadosProvider = ({ children }: { children: React.ReactNode }) 
 
   // Funcion para agregar un convocado a la base de datos y al estado local
   const agregarConvocado = async (convocado: Omit<Convocado, "id">) => {
-    const { data, error } = await supabase
+    // 1. Verificar si ya existe en la tabla "convocados"
+    const { data: existente, error: errorSelect } = await supabase
+      .from("convocados")
+      .select("*")
+      .eq("id_jugador", convocado.id_jugador) // 👈 usa el campo que relaciona al jugador
+
+    if (errorSelect) {
+      console.error("Error al verificar si ya existe:", errorSelect);
+      return;
+    }
+
+    if (existente && existente.length > 0) {
+      console.warn("Jugador ya está convocado");
+      return; // ❌ Ya existe, no se agrega
+    }
+
+    // 2. Si no existe, lo insertamos
+    const { data, error: errorInsert } = await supabase
       .from("convocados")
       .insert([convocado])
       .select()
       .single();
-    if (error) console.error(error);
-    else setConvocados((prev) => [...prev, data]);
+
+    if (errorInsert) {
+      console.error("Error al insertar convocado:", errorInsert);
+    } else {
+      setConvocados((prev) => [...prev, data]);
+    }
   };
+
 
   // Funcion para agregar varios convocados a la base de datos y al estado local
-  const agregarConvocados = async (convocados: Omit<Convocado, "id">[]) => {
-    const { data, error } = await supabase
-      .from("convocados")
-      .insert(convocados)
-      .select();
-    if (error) console.error(error);
-    else setConvocados((prev) => [...prev, ...(data || [])]);
-  };
+  const agregarConvocados = async (nuevos: Omit<Convocado, "id">[]) => {
+    for (const jugador of nuevos) {
+      // Prevenir duplicados: consultar si ya existe
+      const { data: existente, error } = await supabase
+        .from("convocados")
+        .select("*")
+        .eq("id_jugador", jugador.id_jugador)
+        .maybeSingle();
 
+      if (error) {
+        console.error("Error consultando convocado existente:", error);
+        continue;
+      }
+
+      if (existente) {
+        console.log("Jugador ya convocado:", jugador.nombre);
+        continue; // ya está convocado, no lo agregamos
+      }
+
+      // Insertar nuevo convocado
+      const { data, error: insertError } = await supabase
+        .from("convocados")
+        .insert([jugador])
+        .select()
+        .single(); // solo uno porque insertamos uno
+
+      if (insertError) {
+        console.error("Error al agregar convocado:", insertError);
+      } else if (data) {
+        setConvocados((prev) => [...prev, data]); // Actualiza el estado local
+      }
+    }
+  }
 
   return (
     <ConvocadosContext.Provider
@@ -58,7 +106,7 @@ export const ConvocadosProvider = ({ children }: { children: React.ReactNode }) 
         agregarConvocado,
         agregarConvocados,
         eliminarConvocado,
-        quitarConvocado, 
+        quitarConvocado,
       }}
     >
       {children}

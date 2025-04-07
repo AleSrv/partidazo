@@ -4,10 +4,11 @@ import HeaderComponents from "./components/HeaderComponents";
 import SidebarComponents from "./components/SidebarComponents";
 import MainComponents from "./components/MainComponents";
 import FooterComponents from "./components/FooterComponents";
-import Convocados from "./components/Convocados";
+// import Convocados from "./components/Convocados";
 import { ConvocadosProvider } from "./Provider/ConvocadosProvider";
 import { JugadoresProvider } from "./Provider/JugadoresProvider";
 import { Toaster } from "react-hot-toast";
+import Convocados from "./components/Convocados";
 
 
 
@@ -57,13 +58,31 @@ const App: React.FC = () => {
                 </button>
               </div>
             }
+
             aside={
-              isSidebarOpen ? (
-                <SidebarComponents isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
-              ) : (
-                <Convocados />
-              )
+              <div className="relative w-64 min-w-64 h-full">
+                {/* Convocados (visible cuando el sidebar está cerrado) */}
+                {!isSidebarOpen && (
+                  <div className="h-full  bg-lime-800 text-white shadow-md transition-opacity duration-500">
+                    <Convocados />
+                  </div>
+                )}
+
+                {/* Sidebar (animado desde la izquierda) */}
+                <div
+                  className={`
+                    absolute inset-0 z-20  bg-lime-800 text-white shadow-md h-full w-full
+                    transform transition-transform duration-500
+                   ${isSidebarOpen ? "translate-x-0" : "-translate-x-[110%]"}
+                  `}
+                >
+                  <SidebarComponents isOpen={isSidebarOpen} closeSidebar={closeSidebar} />
+                </div>
+              </div>
             }
+
+
+
             main={isFormOpen ? <MainComponents /> : null}
             footer={<FooterComponents />}
           />
